@@ -31,9 +31,13 @@ header {
 }
 
 nav {
-    padding: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 5%;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
 }
 
 nav ul {
@@ -82,9 +86,67 @@ nav ul li a.active {
     color: var(--primary-color);
 }
 
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease;
+    background-color: var(--primary-color);
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger {
+        display: block;
+        z-index: 101;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .navitem {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        gap: 0;
+        flex-direction: column;
+        background-color: var(--secondary-color);
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+        transition: 0.3s;
+        padding-top: 4rem;
+        z-index: 100;
+    }
+
+    .navitem.active {
+        left: 0;
+    }
+
+    .navitem li {
+        margin: 16px 0;
+    }
+}
+
+
 /* Main content padding to account for fixed header */
 main {
     padding-top: 80px;
+    overflow-x: hidden;
 }
 
 #home::before {
@@ -176,10 +238,10 @@ main {
 /* Add these styles to your existing CSS file */
 
 #home {
-    height: 100vh;
+    min-height: 100vh;
+    padding: 80px 5% 2rem;
     display: flex;
     align-items: center;
-    padding: 0 10%;
     background: linear-gradient(
         135deg,
         var(--secondary-color) 0%,
@@ -201,7 +263,7 @@ main {
 
 .text-content {
     flex: 1;
-    animation: fadeInLeft 1s ease-out;
+    min-width: 300px;
 }
 
 .image-container {
@@ -209,12 +271,14 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadeInRight 1s ease-out;
+    min-width: 300px;
+    max-width: 450px;
+    padding: 1rem;
 }
 
 .image-wrapper {
-    width: 350px;
-    height: 350px;
+    width: 100%;
+    height: auto;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
@@ -239,7 +303,7 @@ main {
 .image-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 20px;
     filter: brightness(0.9) contrast(1.1);
     transition: filter 0.3s ease;
@@ -272,17 +336,47 @@ main {
 /* Responsive design */
 @media (max-width: 968px) {
     .home-content {
-        flex-direction: column-reverse;
+        flex-direction: column;
         text-align: center;
+        padding: 2rem 1rem;
+        gap: 3rem;
     }
 
     .text-content {
-        align-items: center;
+        order: 2;
+        padding: 0 1rem;
+    }
+
+    .image-container {
+        order: 1;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
     }
 
     .image-wrapper {
+        transform: none; /* Remove perspective on mobile */
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1; /* Maintain square aspect ratio */
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-container {
         width: 280px;
-        height: 280px;
+        padding: 0;
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -291,6 +385,10 @@ main {
     gap: 1.5rem;
     margin-top: 2rem;
     animation: fadeInLeft 1s ease-out 0.6s backwards;
+}
+
+.social-links a{
+    text-decoration: none;
 }
 
 .social-link {
@@ -309,7 +407,6 @@ main {
     height: 50px;
     background: rgba(0, 255, 136, 0.05);
 }
-
 .social-link::before {
     content: '';
     position: absolute;
@@ -646,14 +743,55 @@ main {
 /* Responsive design */
 @media (max-width: 968px) {
     .contact-container {
-        .contact-container {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
     
-        .contact-item:hover {
-            transform: translateX(0);
-        }
+    .contact-info {
+        width: 100%;
+    }
+
+    .contact-message {
+        width: 100%;
+    }
+
+    .contact-item {
+        padding: 1rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    #contact {
+        padding: 3rem 5%;
+    }
+
+    .contact-container {
+        padding: 0;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .contact-social .social-links {
+        justify-content: center;
+    }
+
+    nav {
+        padding: 0.8rem 3%;
+    }
+
+    .hamburger {
+        margin-right: 1rem;
     }
 }
 
@@ -770,4 +908,28 @@ footer::before {
     .footer-social {
         justify-content: center;
     }
+}
+
+/* Ensure all sections have proper padding */
+section {
+    padding: 4rem 5%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Container width adjustments */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Fix for contact form width */
+.contact-message form {
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
 }
